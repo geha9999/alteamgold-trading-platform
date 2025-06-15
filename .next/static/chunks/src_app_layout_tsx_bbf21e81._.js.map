@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///project/sandbox/user-workspace/src/app/layout.tsx"],"sourcesContent":["\"use client\";\n\nimport { SessionProvider } from \"next-auth/react\";\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <SessionProvider>\n      {children}\n    </SessionProvider>\n  );\n}"],"names":[],"mappings":";;;;AAEA;AAFA;;;AAIe,SAAS,WAAW,EAAE,QAAQ,EAAiC;IAC5E,qBACE,6LAAC,iJAAA,CAAA,kBAAe;kBACb;;;;;;AAGP;KANwB","debugId":null}}]
+}
