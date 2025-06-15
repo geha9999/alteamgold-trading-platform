@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id               String   @id @default(cuid())
+  name             String
+  email            String   @unique
+  passwordHash     String
+  role             String
+  mobileNumber     String?
+  idCardUrl        String?
+  twoFactorEnabled Boolean  @default(false)
+  twoFactorSecret  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  mt5Accounts      Mt5Account[]
+  subscriptions    Subscription[]
+}
+
+model Mt5Account {
+  id           String   @id @default(cuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  brokerName   String
+  serverName   String
+  accountId    String
+  passcode     String
+  asset        Asset
+  minDeposit   Float
+  isDemo       Boolean
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id           String   @id @default(cuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  mt5Account   Mt5Account @relation(fields: [mt5AccountId], references: [id])
+  mt5AccountId String
+  type         SubscriptionType
+  startDate    DateTime @default(now())
+  endDate      DateTime
+  hasVps       Boolean
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum Asset {
+  GOLD
+  BITCOIN
+}
+
+enum SubscriptionType {
+  TRIAL
+  REGULAR
+  PREMIUM
+}
